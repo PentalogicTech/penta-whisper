@@ -1,4 +1,5 @@
 .env
 Data
 Logs
-__init__.py
+__pycache__
+
