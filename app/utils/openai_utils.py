@@ -25,7 +25,7 @@ def transcribe_audio(audio_convertido):
 
 def fix_text(transcripto):
     corregido = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo", 
+        model="4o", 
         temperature=0,
         max_tokens=2000,        
         messages=[
