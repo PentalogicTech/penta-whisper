@@ -38,6 +38,12 @@ def save_audio_file(audio_link, current_date):
 
     return audio_path, filename, log_folder, text_folder, audio_folder, current_url
 
+# Calculo de duracion del audio para monetizar
+def calculo_longitud_audio(audio_path):
+    audio = AudioSegment.from_file(audio_path)
+    duration_seconds = len(audio) / 1000.0  # Convertir milisegundos a segundos
+    return duration_seconds
+
 
 def convert_to_wav(audio_path, audio_folder, filename):
     audio = AudioSegment.from_file(audio_path)
