@@ -20,9 +20,10 @@ def transcribe_audio(audio_convertido):
         file=media_file,
     )
 
-    return transcripto
+    tokens_whisper = transcripto.get('usage', {}).get('total_tokens', 0)
+    return transcripto, tokens_whisper
 
-
+    
 def fix_text(transcripto):
     corregido = openai.ChatCompletion.create(
         model="4o", 
@@ -34,4 +35,7 @@ def fix_text(transcripto):
         ]
     )
 
-    return corregido
+    tokens_gpt = corregido['usage']['total_tokens']
+    return corregido, tokens_gpt
+
+    
