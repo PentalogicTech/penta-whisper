@@ -15,14 +15,14 @@ def process_audio(audio_link):
         audio_path, filename, log_folder, text_folder, audio_folder, current_url = save_audio_file(audio_link, current_date)
         longitud_audio = calculo_longitud_audio (audio_path)
         audio_convertido = convert_to_wav (audio_path, audio_folder, filename)
-        audio_transcripto = transcribe_audio (audio_convertido)
+        audio_transcripto, tokens_whisper = transcribe_audio (audio_convertido)
         text_filename = guardado_txt(filename, text_folder, audio_transcripto)
-        audio_final = fix_text (audio_transcripto)
+        audio_final, tokens_gpt = fix_text (audio_transcripto)
 
         save_logs(log_folder, current_date, current_url, text_filename)
 
         os.remove(audio_convertido)
-        return audio_final['choices'][0]['message'], longitud_audio
+        return audio_final['choices'][0]['message'], longitud_audio, tokens_whisper, tokens_gpt 
     
     except Exception as e:
         process_audio.retry(exc=e)
