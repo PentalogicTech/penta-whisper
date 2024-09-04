@@ -7,6 +7,7 @@ load_dotenv(dotenv_path)
 
 API_KEY = os.getenv("API_KEY")
 ORGANIZATION = os.getenv("ORGANIZATION")
+costo_token = os.getenv("COSTO_GPT")
 
 openai.api_key = API_KEY
 openai.organization = ORGANIZATION

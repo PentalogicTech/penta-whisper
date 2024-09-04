@@ -3,9 +3,13 @@ import datetime
 from werkzeug.utils import secure_filename
 from urllib.parse import urlparse
 from pydub import AudioSegment
+from dotenv import find_dotenv, load_dotenv
 
-costo_minuto_whisper = 0.006
 
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path)
+
+costo_minuto_whisper = os.getenv("COSTO_WHISPER")
 
 # Recibe el link de audio, crea las carpetas y lo guarda
 def save_audio_file(audio_link, current_date):
