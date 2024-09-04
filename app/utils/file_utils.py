@@ -4,6 +4,8 @@ from werkzeug.utils import secure_filename
 from urllib.parse import urlparse
 from pydub import AudioSegment
 
+costo_minuto_whisper = 0.006
+
 
 # Recibe el link de audio, crea las carpetas y lo guarda
 def save_audio_file(audio_link, current_date):
@@ -39,10 +41,13 @@ def save_audio_file(audio_link, current_date):
     return audio_path, filename, log_folder, text_folder, audio_folder, current_url
 
 # Calculo de duracion del audio para monetizar
-def calculo_longitud_audio(audio_path):
+def calculo_costo_audio(audio_path):
     audio = AudioSegment.from_file(audio_path)
     duration_seconds = len(audio) / 1000.0  # Convertir milisegundos a segundos
-    return duration_seconds
+    
+    costo_audio = (duration_seconds /60) * costo_minuto_whisper # Paso a minutos y calculo el costo
+    
+    return costo_audio
 
 
 def convert_to_wav(audio_path, audio_folder, filename):

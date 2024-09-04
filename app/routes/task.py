@@ -1,6 +1,6 @@
 
 from app.utils.openai_utils import transcribe_audio, fix_text
-from app.utils.file_utils import save_logs, guardado_txt, save_audio_file, convert_to_wav, calculo_longitud_audio
+from app.utils.file_utils import save_logs, guardado_txt, save_audio_file, convert_to_wav, calculo_costo_audio
 import os, datetime
 from app.celery import celery
 from flask import Blueprint
@@ -13,16 +13,16 @@ def process_audio(audio_link):
 
         current_date = datetime.datetime.now().strftime('%Y-%m-%d') 
         audio_path, filename, log_folder, text_folder, audio_folder, current_url = save_audio_file(audio_link, current_date)
-        longitud_audio = calculo_longitud_audio (audio_path)
+        costo_audio = calculo_costo_audio (audio_path)
         audio_convertido = convert_to_wav (audio_path, audio_folder, filename)
-        audio_transcripto, tokens_whisper = transcribe_audio (audio_convertido)
+        audio_transcripto = transcribe_audio (audio_convertido)
         text_filename = guardado_txt(filename, text_folder, audio_transcripto)
-        audio_final, tokens_gpt = fix_text (audio_transcripto)
+        audio_final, costo_gpt = fix_text (audio_transcripto)
 
         save_logs(log_folder, current_date, current_url, text_filename)
 
         os.remove(audio_convertido)
-        return audio_final['choices'][0]['message'], longitud_audio, tokens_whisper, tokens_gpt 
+        return audio_final['choices'][0]['message']['content'], (costo_audio + costo_gpt) 
     
     except Exception as e:
         process_audio.retry(exc=e)
