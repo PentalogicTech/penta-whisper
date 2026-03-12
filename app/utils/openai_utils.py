@@ -35,7 +35,7 @@ def fix_text(transcripto):
         ]
     )
 
-    costo_gpt = corregido['usage']['total_tokens'] * 0.000005
+    costo_gpt = float(corregido['usage']['total_tokens']) * float(costo_token)
     return corregido, costo_gpt
 
     

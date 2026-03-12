@@ -8,7 +8,6 @@ from dotenv import find_dotenv, load_dotenv
 
 dotenv_path = find_dotenv()
 load_dotenv(dotenv_path)
-
 costo_minuto_whisper = os.getenv("COSTO_WHISPER")
 
 # Recibe el link de audio, crea las carpetas y lo guarda
@@ -40,7 +39,7 @@ def save_audio_file(audio_link, current_date):
     audio_path = os.path.join(audio_folder, filename)
     with open(audio_path, 'wb') as audio_file:
         audio_file.write(response.content)
-    
+
 
     return audio_path, filename, log_folder, text_folder, audio_folder, current_url
 
@@ -48,8 +47,7 @@ def save_audio_file(audio_link, current_date):
 def calculo_costo_audio(audio_path):
     audio = AudioSegment.from_file(audio_path)
     duration_seconds = len(audio) / 1000.0  # Convertir milisegundos a segundos
-    
-    costo_audio = (duration_seconds /60) * costo_minuto_whisper # Paso a minutos y calculo el costo
+    costo_audio = (duration_seconds /60) * float(costo_minuto_whisper) # Paso a minutos y calculo el costo
     
     return costo_audio
 

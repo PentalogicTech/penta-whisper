@@ -16,9 +16,7 @@ def process_audio_route():
 
     TOKENS_CLIENTES_STR = os.getenv("TOKENS_CLIENTES_STR")
     TOKENS_CLIENTES = dict(token.split(":") for token in TOKENS_CLIENTES_STR.split(","))
-    print(TOKENS_CLIENTES)
-    print(TOKEN)
-    
+   
 
     if not audio_link:
         return 'No se proporcionó un enlace válido', 400
@@ -29,7 +27,7 @@ def process_audio_route():
     task = process_audio.delay(audio_link)
     return jsonify({'task_id': task.id}), 202
 
-# METODO GET
+#### METODO GET ####
 
 @apiCalls_bp.route('/api/task/<task_id>', methods=['GET'])
 def get_task_status(task_id):
